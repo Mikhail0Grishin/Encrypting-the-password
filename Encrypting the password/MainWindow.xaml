@@ -1,0 +1,19 @@
+﻿<Window x:Class="Encrypting_the_password.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Encrypting_the_password"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/image.jpg"></ImageBrush>
+        </Grid.Background>
+        <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="180"/>
+        <Label Foreground="White" Content="Login" HorizontalAlignment="Center" Margin="0,180,280,0" VerticalAlignment="Top" Height="33" Width="61"/>
+        <Label Foreground="White" Content="Password" HorizontalAlignment="Center" Margin="0,250,280,0" VerticalAlignment="Top" RenderTransformOrigin="0.218,0.48" Height="33" Width="61"/>
+        <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="0,250,0,0"/>
+        <Label Foreground="White" Content="Login page" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" FontSize="24"/>
+    </Grid>
+</Window>
