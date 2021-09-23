@@ -23,6 +23,8 @@ namespace Encrypting_the_password
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainViewModel();
         }
     }
 }
