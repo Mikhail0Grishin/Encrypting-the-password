@@ -11,10 +11,10 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Resources/image.jpg"></ImageBrush>
         </Grid.Background>
-        <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="180"/>
+        <TextBox x:Name="tbLogin" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="180"/>
         <Label Foreground="White" Content="Login" HorizontalAlignment="Center" Margin="0,180,280,0" VerticalAlignment="Top" Height="33" Width="61"/>
         <Label Foreground="White" Content="Password" HorizontalAlignment="Center" Margin="0,250,280,0" VerticalAlignment="Top" RenderTransformOrigin="0.218,0.48" Height="33" Width="61"/>
-        <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="0,250,0,0"/>
+        <TextBox x:Name="tbPassword" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="0,250,0,0"/>
         <Label Foreground="White" Content="Login page" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" FontSize="24"/>
         <Button x:Name="Login" Content="Login" HorizontalAlignment="Center" Margin="0,300,110,0" VerticalAlignment="Top" RenderTransformOrigin="-1.58,0.371" Width="88" Height="25" FontSize="15" Background="CadetBlue"
                 Command="{Binding LoginCommand}">

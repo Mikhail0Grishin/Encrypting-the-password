@@ -8,11 +8,11 @@ namespace Encrypting_the_password
 {
     class MainContext
     {
-        private string connectionString = "Server=(localdb)\\MIKHAIL;Database=master;Trusted_Connection=True;";
+        private string connectionString = "Server=MIKHAIL;Database=master;Trusted_Connection=True;";   
 
-        public MainContext()
+        public string ConnectionString 
         {
-
+            get { return connectionString; }
         }
     }
 }
