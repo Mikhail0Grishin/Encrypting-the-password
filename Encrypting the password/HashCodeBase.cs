@@ -8,7 +8,7 @@ namespace Encrypting_the_password
 {
     public class HashCodeBase
     {
-        private static List<Char> hashBase = new List<char>()
+        private List<Char> hashBase = new List<char>()
         {
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
             'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -20,14 +20,34 @@ namespace Encrypting_the_password
             'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'
         };
 
-        private static String login;
-        private static String password;
-        private static String loginFromDB;
-        private static String hashCodeFromDB;
-        private static Boolean error;
-        private static String saltFromDB; // That is the chars for hash-func
+        private string login;
+        private string password;
+        private string loginFromDB;
+        private string hashCodeFromDB;
+        private bool error;
+        private string saltFromDB; // That is the string for hash-func
 
+        public string ConvertToBinarySequence(string password) 
+        {
+            StringBuilder binaryResult = new StringBuilder();
+            StringBuilder binaryNumber = new StringBuilder();
 
+            for (int i = 0; i < password.Length; i++)
+            {
+                binaryNumber.Append(Convert.ToString(hashBase.IndexOf(password[i]), 2));
+
+                while (binaryNumber.Length != 7)
+                {
+                    binaryNumber.Insert(0, '0');
+                }
+
+                binaryResult.Append(binaryNumber);
+
+                binaryNumber.Length = 0;
+            }
+
+            return binaryResult.ToString();
+        }
 
     }
 }

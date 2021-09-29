@@ -17,7 +17,7 @@
         <TextBox x:Name="tbPassword" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="30" Margin="0,250,0,0"/>
         <Label Foreground="White" Content="Login page" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" FontSize="24"/>
         <Button x:Name="Login" Content="Login" HorizontalAlignment="Center" Margin="0,300,110,0" VerticalAlignment="Top" RenderTransformOrigin="-1.58,0.371" Width="88" Height="25" FontSize="15" Background="CadetBlue"
-                Command="{Binding LoginCommand}">
+                Command="{Binding DataContext.LoginCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -25,7 +25,7 @@
             </Button.Resources>
         </Button>
         <Button x:Name="Register" Content="Register" HorizontalAlignment="Center" Margin="110,300,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.58,0.371" Width="88" Height="25" FontSize="15" Background="CadetBlue"
-                 Command="{Binding RigisterCommand}">
+                Command="{Binding DataContext.RegisterCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>

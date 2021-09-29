@@ -20,7 +20,14 @@ namespace Encrypting_the_password
             this.canExecute = canExecute;
         }
 
-        public bool CanExecute(object parameter) => canExecute == null || canExecute(parameter);
-        public void Execute(object parameter) => execute(parameter);
+        public bool CanExecute(object parameter)
+        {
+            return canExecute == null || canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            execute(parameter);
+        }
     }
 }

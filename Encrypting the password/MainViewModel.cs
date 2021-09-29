@@ -10,8 +10,11 @@ namespace Encrypting_the_password
         private ICommand loginCommand;
         private ICommand registerCommand;
         MainContext context = new MainContext();
+        HashCodeBase hashBase = new HashCodeBase();
         public ICommand LoginCommand => loginCommand ??= new RelayCommand(parameter =>
         {
+            string login = GetLogin();
+            string password = GetPassword();
 
         });
         public ICommand RegisterCommand => registerCommand ??= new RelayCommand(parameter =>
