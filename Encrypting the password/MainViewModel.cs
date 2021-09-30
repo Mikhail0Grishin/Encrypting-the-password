@@ -16,6 +16,10 @@ namespace Encrypting_the_password
             string login = GetLogin();
             string password = GetPassword();
 
+            int result = hashBase.ConvertBinaryNumberToDecimal("1010");
+
+
+
         });
         public ICommand RegisterCommand => registerCommand ??= new RelayCommand(parameter =>
         {

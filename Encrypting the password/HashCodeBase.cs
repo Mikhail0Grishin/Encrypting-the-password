@@ -49,5 +49,23 @@ namespace Encrypting_the_password
             return binaryResult.ToString();
         }
 
+        public int ConvertBinaryNumberToDecimal(string binaryNumber)
+        {
+            return Convert.ToInt32(binaryNumber, 2);
+        }
+
+        public string CreateSalt() 
+        {
+            Random random = new Random();
+            string result = "";
+            int randomNumber = random.Next(1, 127);
+            for (int i = 0; i < 32 - password.Length; i++)
+            {
+                result = result + hashBase[randomNumber];
+                randomNumber = random.Next(1, 127);
+            }
+
+            return result;
+        }
     }
 }

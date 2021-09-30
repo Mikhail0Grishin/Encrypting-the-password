@@ -32,5 +32,25 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <Label x:Name="loginLabel" HorizontalAlignment="Left" Margin="514,181,0,0" VerticalAlignment="Top" Height="30" RenderTransformOrigin="0.5,0.5" Width="100" Visibility="Hidden">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="1.298"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="registerLabel" HorizontalAlignment="Left" Margin="514,251,0,0" VerticalAlignment="Top" Height="30" RenderTransformOrigin="0.5,0.5" Width="100" Visibility="Hidden">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="1.298"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
     </Grid>
 </Window>
