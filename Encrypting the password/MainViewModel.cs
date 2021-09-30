@@ -10,30 +10,28 @@ namespace Encrypting_the_password
         private ICommand loginCommand;
         private ICommand registerCommand;
         MainContext context = new MainContext();
-        HashCodeBase hashBase = new HashCodeBase();
         public ICommand LoginCommand => loginCommand ??= new RelayCommand(parameter =>
         {
             string login = GetLogin();
             string password = GetPassword();
 
-            int result = hashBase.ConvertBinaryNumberToDecimal("1010");
-
-
-
         });
         public ICommand RegisterCommand => registerCommand ??= new RelayCommand(parameter =>
         {
+            string login = GetLogin();
+            string password = GetPassword();
+
             using (SqlConnection connection = new SqlConnection(context.ConnectionString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand();
+                HashCodeBase hashBase = new HashCodeBase(login, password);
 
-                string login = GetLogin();
-                string password = GetPassword();
+                string hashCode = hashBase.CalculateHashCode();
 
                 if (login != null && password != null)
                 {
-                    command.CommandText = $" USE Encrypting; INSERT Users(Login, Password) VALUES ('{login}', '{password}')";
+                    command.CommandText = $" USE Encrypting; INSERT Users(Login, Password) VALUES ('{login}', '{hashCode}')";
                     command.Connection = connection;
                     command.ExecuteNonQuery();
                 }

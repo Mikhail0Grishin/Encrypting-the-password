@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,71 @@ namespace Encrypting_the_password
         private bool error;
         private string saltFromDB; // That is the string for hash-func
 
-        public string ConvertToBinarySequence(string password) 
+        public HashCodeBase(string login, string password)
+        {
+            this.login = login;
+            this.password = password;
+        }
+
+        public string CalculateHashCode()
+        {
+            string binaryLogin = ConvertToBinarySequence(login);
+            string binaryPassword = ConvertToBinarySequence(password);
+
+            string binaryRule = CreateRule(binaryLogin);
+
+            List<String> currentPattern = new List<String>() { "111", "110", "101", "100", "011", "001", "010", "000"};
+
+            ArrayList newPatter = ConverStringToArrayList(binaryRule);
+
+            string salt = CreateSalt();
+
+            string binarySalt = ConvertToBinarySequence(salt);
+
+            string initStateAut = binaryPassword + binarySalt;
+
+            string binaryHashCode = CreatHashCode(initStateAut, currentPattern, newPatter);
+
+            string hashCode = ConvertBinarySequenceToText(binaryHashCode);
+
+            return hashCode;
+        }
+
+        private string CreatHashCode(string initStateAut, List<string> currentPattern, ArrayList newPatter)
+        {
+            StringBuilder newStateAut = new StringBuilder();
+            string neighborhoodOfPoint = "";
+
+            for (int i = 0; i < initStateAut.Length - 2; i++)
+            {
+                
+                neighborhoodOfPoint = initStateAut.Substring(i, 3);
+              
+
+                newStateAut.Append(newPatter[currentPattern.IndexOf(neighborhoodOfPoint)]);
+            }
+
+            neighborhoodOfPoint = initStateAut.Substring(initStateAut.Length - 2) + initStateAut[0];
+            newStateAut.Append(newPatter[currentPattern.IndexOf(neighborhoodOfPoint)]);
+
+            neighborhoodOfPoint = initStateAut.Substring(initStateAut.Length - 1) + initStateAut[0] + initStateAut[1];
+            newStateAut.Append(newPatter[currentPattern.IndexOf(neighborhoodOfPoint)]);
+
+            return newStateAut.ToString();
+        }
+
+        private ArrayList ConverStringToArrayList(string str)
+        {
+            ArrayList arrayList = new ArrayList();
+            for (int i = 0; i < str.Length; i++)
+            {
+                arrayList.Add(str[i]);
+            }
+
+            return arrayList;
+        }
+
+        private string ConvertToBinarySequence(string password) 
         {
             StringBuilder binaryResult = new StringBuilder();
             StringBuilder binaryNumber = new StringBuilder();
@@ -49,12 +114,26 @@ namespace Encrypting_the_password
             return binaryResult.ToString();
         }
 
-        public int ConvertBinaryNumberToDecimal(string binaryNumber)
+        private long ConvertBinaryNumberToDecimal(string binaryNumber)
         {
-            return Convert.ToInt32(binaryNumber, 2);
+            return Convert.ToInt64(binaryNumber, 2);
         }
 
-        public string CreateSalt() 
+        private string ConvertBinarySequenceToText(string binarySequence)
+        {
+            StringBuilder text = new StringBuilder();
+            int numberOfLetter;
+
+            for (int i = 0; i < binarySequence.Length; i += 7)
+            {
+                numberOfLetter = (int)ConvertBinaryNumberToDecimal(binarySequence.Substring(i, 7));
+                text.Append(hashBase[numberOfLetter]);
+            }
+
+            return text.ToString();
+        }
+
+        private string CreateSalt() 
         {
             Random random = new Random();
             string result = "";
@@ -66,6 +145,20 @@ namespace Encrypting_the_password
             }
 
             return result;
+        }
+
+        private string CreateRule(string binaryLogin)
+        {
+            int loginFromBinaryLogin = (int)ConvertBinaryNumberToDecimal(binaryLogin);
+            int ruleDecomalNumber = loginFromBinaryLogin % 255;
+
+            StringBuilder ruleBinaryNumber = new StringBuilder(Convert.ToString(ruleDecomalNumber, 2));
+            while (ruleBinaryNumber.Length != 8)
+            {
+                ruleBinaryNumber.Insert(0, "0");
+            }
+
+            return ruleBinaryNumber.ToString();
         }
     }
 }
