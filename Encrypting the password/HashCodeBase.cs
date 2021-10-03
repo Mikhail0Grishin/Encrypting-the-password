@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +24,7 @@ namespace Encrypting_the_password
 
         private string login;
         private string password;
-        private string loginFromDB;
-        private string hashCodeFromDB;
-        private bool error;
-        private string saltFromDB; // That is the string for hash-func
+        private string salt; // That is the string for hash-func
 
         public HashCodeBase(string login, string password)
         {
@@ -47,6 +45,8 @@ namespace Encrypting_the_password
 
             string salt = CreateSalt();
 
+            this.salt = salt;
+
             string binarySalt = ConvertToBinarySequence(salt);
 
             string initStateAut = binaryPassword + binarySalt;
@@ -56,6 +56,36 @@ namespace Encrypting_the_password
             string hashCode = ConvertBinarySequenceToText(binaryHashCode);
 
             return hashCode;
+        }
+
+        public bool CompareHashCodes(string hashCodeFromDb, string salt)
+        {
+            string binaryLogin = ConvertToBinarySequence(login);
+            string binaryPassword = ConvertToBinarySequence(password);
+
+            string binaryRule = CreateRule(binaryLogin);
+
+            List<String> currentPattern = new List<String>() { "111", "110", "101", "100", "011", "001", "010", "000" };
+
+            ArrayList newPatter = ConverStringToArrayList(binaryRule);
+
+            string binarySalt = ConvertToBinarySequence(salt);
+
+            string initStateAut = binaryPassword + binarySalt;
+
+            string binaryHashCode = CreatHashCode(initStateAut, currentPattern, newPatter);
+
+            string hashCode = ConvertBinarySequenceToText(binaryHashCode);
+
+            if (hashCode == hashCodeFromDb)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         private string CreatHashCode(string initStateAut, List<string> currentPattern, ArrayList newPatter)
@@ -114,20 +144,28 @@ namespace Encrypting_the_password
             return binaryResult.ToString();
         }
 
-        private long ConvertBinaryNumberToDecimal(string binaryNumber)
+        private string ConvertBinaryNumberToDecimal(string binaryNumber)
         {
-            return Convert.ToInt64(binaryNumber, 2);
+            BigInteger decimalNumber = new BigInteger();
+            long number = 0;
+            for (int i = 0; i < binaryNumber.Length; i++)
+            {
+                number = (long)(Char.GetNumericValue(binaryNumber[i]) * Math.Pow((double) 2, (double) (binaryNumber.Length - i - 1)));
+                decimalNumber = decimalNumber + number;
+            }
+
+            return decimalNumber.ToString();
         }
 
         private string ConvertBinarySequenceToText(string binarySequence)
         {
             StringBuilder text = new StringBuilder();
-            int numberOfLetter;
+            string letter;
 
             for (int i = 0; i < binarySequence.Length; i += 7)
             {
-                numberOfLetter = (int)ConvertBinaryNumberToDecimal(binarySequence.Substring(i, 7));
-                text.Append(hashBase[numberOfLetter]);
+                letter = ConvertBinaryNumberToDecimal(binarySequence.Substring(i, 7));
+                text.Append(hashBase[Convert.ToInt32(letter)]);
             }
 
             return text.ToString();
@@ -149,16 +187,43 @@ namespace Encrypting_the_password
 
         private string CreateRule(string binaryLogin)
         {
-            int loginFromBinaryLogin = (int)ConvertBinaryNumberToDecimal(binaryLogin);
-            int ruleDecomalNumber = loginFromBinaryLogin % 255;
+            string value = ConvertBinaryNumberToDecimal(binaryLogin);
+            BigInteger loginFromBinaryLogin =  BigInteger.Parse(value);
+            BigInteger ruleDecimalNumber = loginFromBinaryLogin % 255;
 
-            StringBuilder ruleBinaryNumber = new StringBuilder(Convert.ToString(ruleDecomalNumber, 2));
-            while (ruleBinaryNumber.Length != 8)
-            {
-                ruleBinaryNumber.Insert(0, "0");
-            }
+            StringBuilder ruleBinaryNumber = new StringBuilder();
+            ruleBinaryNumber.Append(ToBinaryString(ruleDecimalNumber));         
 
             return ruleBinaryNumber.ToString();
+        }
+
+        public string ToBinaryString(BigInteger bigint)
+        {
+            var bytes = bigint.ToByteArray();
+            var idx = bytes.Length - 1;
+
+            var base2 = new StringBuilder(bytes.Length * 8);
+
+            var binary = Convert.ToString(bytes[idx], 2);
+
+            if (binary[0] != '0' && bigint.Sign == 1)
+            {
+                base2.Append('0');
+            }
+
+            base2.Append(binary);
+
+            for (idx--; idx >= 0; idx--)
+            {
+                base2.Append(Convert.ToString(bytes[idx], 2).PadLeft(8, '0'));
+            }
+
+            return base2.ToString();
+        }
+
+        public string Salt
+        {
+            get { return salt; }
         }
     }
 }
