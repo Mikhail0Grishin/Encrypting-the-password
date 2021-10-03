@@ -192,7 +192,12 @@ namespace Encrypting_the_password
             BigInteger ruleDecimalNumber = loginFromBinaryLogin % 255;
 
             StringBuilder ruleBinaryNumber = new StringBuilder();
-            ruleBinaryNumber.Append(ToBinaryString(ruleDecimalNumber));         
+            ruleBinaryNumber.Append(ToBinaryString(ruleDecimalNumber));
+
+            while (ruleBinaryNumber.Length <= 8)
+            {
+                ruleBinaryNumber.Insert(0, "0");
+            }
 
             return ruleBinaryNumber.ToString();
         }

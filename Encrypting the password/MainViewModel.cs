@@ -99,6 +99,7 @@ namespace Encrypting_the_password
                     command.CommandText = $"Use Encrypting; INSERT INTO Users(Login, Password, Salt) VALUES ('{login}', '{hashCode}', '{salt}')";
                     command.Connection = connection;
                     command.ExecuteNonQuery();
+                    MessageBox.Show("You have successfully registered");
                 }
             }
         });
